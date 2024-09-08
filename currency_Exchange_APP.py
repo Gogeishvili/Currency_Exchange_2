@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QPushButton, QMainWindow, QStackedWidget, QWidget, QLineEdit, QComboBox
 from PyQt5 import uic
 
-from Error_Handler import ErrorHandler
+from error_Handler import ErrorHandler
 
 
 class CurrencyExchangeAPP(QMainWindow):
