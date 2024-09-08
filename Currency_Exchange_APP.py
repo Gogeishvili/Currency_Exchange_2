@@ -1,14 +1,16 @@
 from PyQt5.QtWidgets import QPushButton, QMainWindow, QStackedWidget, QWidget, QLineEdit, QComboBox, QMessageBox
 from PyQt5 import uic
 
-from User_Data import UserData
 from Validation import UserValidation
 
 
 class CurrencyExchangeAPP(QMainWindow):
-    def __init__(self):
+    def __init__(self, *, user_data, currency_data):
         super(CurrencyExchangeAPP, self).__init__()
         uic.loadUi("MainWindow.ui", self)
+
+        self.__user_data = user_data
+        self.__currencies_data = currency_data
 
         self.__stack_widget = self.findChild(QStackedWidget, "stackedWidget")
 
@@ -26,14 +28,15 @@ class CurrencyExchangeAPP(QMainWindow):
         self.__input_amount = self.findChild(QLineEdit, "Amount_Line")
 
         self.__connect_button_events()
+        self.__create_currencies()
 
     def run(self):
         self.__stack_widget.setCurrentWidget(self.__login_page)
         self.show()
 
     def __on_login_enter(self):
-        user_data = UserData()
-        user_validation = UserValidation(user_data)
+
+        user_validation = UserValidation(self.__user_data)
         username = self.__user.text()
         password = self.__password.text()
         if user_validation.validate(username, password):
@@ -56,6 +59,16 @@ class CurrencyExchangeAPP(QMainWindow):
         print(self.__currency_2.currentText())
         print(self.__input_amount.text())
         print("clicked on convert")
+
+    def __create_currencies(self):
+        currencies = list(self.__currencies_data)
+        self.__currency_1.addItems(currencies)
+        self.__currency_2.addItems(currencies)
+        default_currency_1 = 'GEL'
+        default_currency_2 = 'USD'
+        if default_currency_1 in currencies and default_currency_2 in currencies:
+            self.__currency_1.setCurrentText(default_currency_1)
+            self.__currency_2.setCurrentText(default_currency_2)
 
     def __connect_button_events(self):
         self.__login_button.clicked.connect(self.__on_login_enter)

@@ -1,6 +1,6 @@
 class UserValidation:
     def __init__(self, user_data):
-        self.__users = user_data.get_users()
+        self.__users = user_data
 
     def validate(self, username, password):
         try:
