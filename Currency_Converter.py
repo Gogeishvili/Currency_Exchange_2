@@ -2,17 +2,17 @@ class CurrencyConverter:
     def __init__(self, currency_data):
         self.__currency_data = currency_data
 
-    def convert(self, from_currency, to_currency, amount):
+    def convert(self, currency_from, currency_to, amount):
         normalized_rates = self.__normalize_rates(self.__currency_data)
 
-        if from_currency not in normalized_rates or to_currency not in normalized_rates:
+        if currency_from not in normalized_rates or currency_to not in normalized_rates:
             return None
         try:
             amount = float(amount)
         except ValueError:
             return None
 
-        rate = normalized_rates[to_currency] / normalized_rates[from_currency]
+        rate = normalized_rates[currency_to] / normalized_rates[currency_from]
         return amount * rate
 
     def __normalize_rates(self, rates):
