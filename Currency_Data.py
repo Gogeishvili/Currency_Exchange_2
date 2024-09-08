@@ -26,7 +26,6 @@ class CurrencyDataController:
                         rate = currency['rate']
                         currency_dict[code] = rate
 
-                    # Ensure GEL (Georgian Lari) is included
                     if 'GEL' not in currency_dict:
                         currency_dict['GEL'] = 1.00
 
