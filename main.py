@@ -6,8 +6,6 @@ from Currency_Exchange_APP import CurrencyExchangeAPP
 def main():
     app = QApplication(sys.argv)
 
-
-
     currency_exchange_app = CurrencyExchangeAPP()
     currency_exchange_app.run()
 
