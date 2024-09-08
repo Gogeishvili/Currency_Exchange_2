@@ -1,15 +1,13 @@
 from PyQt5.QtWidgets import QPushButton, QMainWindow, QStackedWidget, QWidget, QLineEdit, QComboBox, QMessageBox
 from PyQt5 import uic
 
-from Validation import UserValidation
-
 
 class CurrencyExchangeAPP(QMainWindow):
-    def __init__(self, *, user_data, currency_data):
+    def __init__(self, *,user_validation_controller,currency_data):
         super(CurrencyExchangeAPP, self).__init__()
         uic.loadUi("MainWindow.ui", self)
 
-        self.__user_data = user_data
+        self.__user_validation_controller = user_validation_controller
         self.__currencies_data = currency_data
 
         self.__stack_widget = self.findChild(QStackedWidget, "stackedWidget")
@@ -35,11 +33,9 @@ class CurrencyExchangeAPP(QMainWindow):
         self.show()
 
     def __on_login_enter(self):
-
-        user_validation = UserValidation(self.__user_data)
         username = self.__user.text()
         password = self.__password.text()
-        if user_validation.validate(username, password):
+        if self.__user_validation_controller.validate(username, password):
             self.__stack_widget.setCurrentWidget(self.__exchange_page)
         else:
             self.__show_error_message("Login Failed", "Username or password is incorrect.")

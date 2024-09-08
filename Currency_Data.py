@@ -3,13 +3,13 @@ import requests
 class CurrencyDataController:
     def __init__(self):
         self.__api_url = 'https://nbg.gov.ge/gw/api/ct/monetarypolicy/currencies/ka/json/?date=2024-09-03'
-        self.__currencies = self.load_currency_data()
+        self.__currencies = self.__load_currency_data()
 
     @property
     def currencies(self):
         return self.__currencies
 
-    def load_currency_data(self):
+    def __load_currency_data(self):
         response = requests.get(self.__api_url)
 
         if response.status_code == 200:

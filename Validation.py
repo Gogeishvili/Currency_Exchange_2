@@ -1,4 +1,4 @@
-class UserValidation:
+class UserValidationController:
     def __init__(self, user_data):
         self.__users = user_data
 
