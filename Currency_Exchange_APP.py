@@ -1,5 +1,7 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QPushButton, QMainWindow, QStackedWidget, QWidget, QLineEdit
+from asyncio import set_event_loop
+
+from PyQt5.QtWidgets import QApplication, QPushButton, QMainWindow, QStackedWidget, QWidget, QLineEdit, QComboBox
 from PyQt5 import uic
 
 
@@ -8,35 +10,42 @@ class CurrencyExchangeAPP(QMainWindow):
         super(CurrencyExchangeAPP, self).__init__()
         uic.loadUi("MainWindow.ui", self)
 
-        self.stack_widget = self.findChild(QStackedWidget, "stackedWidget")
+        self.__stack_widget = self.findChild(QStackedWidget, "stackedWidget")
 
-        self.login_page = self.findChild(QWidget, "Login_Page")
-        self.login_button = self.findChild(QPushButton, "Login_Button")
-        self.user = self.findChild(QLineEdit, "User_Line")
-        self.password = self.findChild(QLineEdit, "User_Line")
+        self.__login_page = self.findChild(QWidget, "Login_Page")
+        self.__login_button = self.findChild(QPushButton, "Login_Button")
+        self.__user = self.findChild(QLineEdit, "User_Line")
+        self.__password = self.findChild(QLineEdit, "Password_Line")
 
-        self.exchange_page = self.findChild(QWidget, "Exchange_Page")
-        self.exit_button = self.findChild(QPushButton, "Exit_Button")
+        self.__exchange_page = self.findChild(QWidget, "Exchange_Page")
+        self.__convert_button = self.findChild(QPushButton, "Convert_Button")
+        self.__exit_button = self.findChild(QPushButton, "Exit_Button")
+        self.__currency_1 = self.findChild(QComboBox, "Currency_1")
+        self.__currency_2 = self.findChild(QComboBox, "Currency_2")
+        self.__converted_amount = self.findChild(QLineEdit, "Converted_Amount_Line")
+        self.__input_amount = self.findChild(QLineEdit, "Amount_Line")
 
         self.__load()
 
     def run(self):
+        self.__stack_widget.setCurrentWidget(self.__login_page)
         self.show()
 
     def __on_login_enter(self):
-        print(self.user.text(), self.password.text())
-        self.stack_widget.setCurrentWidget(self.exchange_page)
-        print("Switched to Exchange Page")
+        print(self.__user.text())
+        print(self.__password.text())
+        self.__stack_widget.setCurrentWidget(self.__exchange_page)
 
     def __on_exit_enter(self):
-        self.stack_widget.setCurrentWidget(self.login_page)
-        print("Switched to Login Page")
+        self.__stack_widget.setCurrentWidget(self.__login_page)
 
     def __on_convert_enter(self):
+        print(self.__currency_1.currentText())
+        print(self.__currency_2.currentText())
+        print(self.__input_amount.text())
         print("clicked on convert")
 
     def __load(self):
-        self.stack_widget.setCurrentWidget(self.login_page)
-
-        self.login_button.clicked.connect(self.__on_login_enter)
-        self.exit_button.clicked.connect(self.__on_exit_enter)
+        self.__login_button.clicked.connect(self.__on_login_enter)
+        self.__exit_button.clicked.connect(self.__on_exit_enter)
+        self.__convert_button.clicked.connect(self.__on_convert_enter)
