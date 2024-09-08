@@ -1,8 +1,8 @@
-import sys
-from asyncio import set_event_loop
-
-from PyQt5.QtWidgets import QApplication, QPushButton, QMainWindow, QStackedWidget, QWidget, QLineEdit, QComboBox
+from PyQt5.QtWidgets import QPushButton, QMainWindow, QStackedWidget, QWidget, QLineEdit, QComboBox
 from PyQt5 import uic
+
+from User_Data import UserData
+from Validation import UserValidation
 
 
 class CurrencyExchangeAPP(QMainWindow):
@@ -25,16 +25,19 @@ class CurrencyExchangeAPP(QMainWindow):
         self.__converted_amount = self.findChild(QLineEdit, "Converted_Amount_Line")
         self.__input_amount = self.findChild(QLineEdit, "Amount_Line")
 
-        self.__load()
+        self.__connect_button_events()
 
     def run(self):
         self.__stack_widget.setCurrentWidget(self.__login_page)
         self.show()
 
     def __on_login_enter(self):
-        print(self.__user.text())
-        print(self.__password.text())
-        self.__stack_widget.setCurrentWidget(self.__exchange_page)
+        user_data = UserData()
+        user_validation = UserValidation(user_data)
+        username = self.__user.text()
+        password = self.__password.text()
+        if user_validation.validate(username, password):
+            self.__stack_widget.setCurrentWidget(self.__exchange_page)
 
     def __on_exit_enter(self):
         self.__stack_widget.setCurrentWidget(self.__login_page)
@@ -45,7 +48,7 @@ class CurrencyExchangeAPP(QMainWindow):
         print(self.__input_amount.text())
         print("clicked on convert")
 
-    def __load(self):
+    def __connect_button_events(self):
         self.__login_button.clicked.connect(self.__on_login_enter)
         self.__exit_button.clicked.connect(self.__on_exit_enter)
         self.__convert_button.clicked.connect(self.__on_convert_enter)
